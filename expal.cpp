@@ -32,7 +32,7 @@
 // Private Functions
 
 void Expal::blinkBit(int pin) {
-	  digitalWrite(pin, HIGH);
+  digitalWrite(pin, HIGH);
   digitalWrite(pin, LOW);
 }
 
@@ -49,7 +49,7 @@ void Expal::shiftOutByte(byte data) {
   // Write out the bits
   int pin = 0;
   byte mask = B00000000;
-  for (mask = 00000001; mask>0; mask <<= 1) { //iterate through bit mask
+  for (mask = 10000001; mask>0; mask <<= 1) { //iterate through bit mask
     if (data & mask){ // if bitwise AND resolves to true
       digitalWrite(SHIFTREG_D,HIGH); // send 1
     }
@@ -128,4 +128,22 @@ void Expal::clearAll() {
   for(int i = 0; i < REGINT; ++i) {
     clear(i);
   }
+}
+
+void Expal::setPin(int registerid, int pin, int value) {
+  if ( !isReg(registerid) ) {
+    return;
+  }
+  if ( pin < 0 || pin > 8 ) {
+    return;
+  }
+  byte bytemask = B10000000;
+  bytemask =  bytemask >> pin;
+  byte newval;
+  if ( value ) {
+    newval = REGDATA[registerid] | bytemask;
+  } else {
+    newval = REGDATA[registerid] & bytemask;
+  }
+  writeByte(registerid, newval);
 }

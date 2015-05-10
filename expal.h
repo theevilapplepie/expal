@@ -32,6 +32,7 @@ class Expal {
     void clear(int registerid);
     void clearAll();
     void writeByte(int registerid, byte data);
+    void setPin(int register, int pin, int value);
   private:
     byte REGDATA [25];
     int REGPINS [25];
@@ -44,7 +45,6 @@ class Expal {
     void blinkBitI(int pin);
     int isNumeric(int num);
     int isReg(int num);
-
 };
 
 #endif
