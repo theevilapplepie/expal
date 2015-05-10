@@ -49,7 +49,7 @@ void Expal::shiftOutByte(byte data) {
   // Write out the bits
   int pin = 0;
   byte mask = B00000000;
-  for (mask = 10000000; mask>0; mask >>= 1) { //iterate through bit mask
+  for (mask = 00000001; mask>0; mask <<= 1) { //iterate through bit mask
     if (data & mask){ // if bitwise AND resolves to true
       digitalWrite(SHIFTREG_D,HIGH); // send 1
     }
@@ -141,14 +141,12 @@ void Expal::setPin(int registerid, int pin, int value) {
   }
 
   byte newval;
-
+  byte bytemask = B10000000;
+  bytemask =  bytemask >> pin;
   if ( value ) {
-    byte bytemask = B00000001;
-    bytemask =  bytemask << pin;
     newval = REGDATA[registerid] | bytemask;
   } else {
-    byte bytemask = B11111110;
-    bytemask =  bytemask << pin;
+    bytemask = ~bytemask;
     newval = REGDATA[registerid] & bytemask;
   }
 
